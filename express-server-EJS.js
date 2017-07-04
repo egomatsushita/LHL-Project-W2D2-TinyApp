@@ -30,15 +30,14 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-
   let returnedInput = req.body;
   let short_URL = generateRandomString();
-  let long_URL = returnedInput.longURL;
+  let long_URL = `http://${returnedInput.longURL}`;
 
   // Update urlDatabase with user's url input and a random short url generated
   urlDatabase[short_URL] = long_URL;
 
-  res.send("Ok");
+  res.redirect(`http://localhost:8080/urls/${short_URL}`);
 })
 
 app.get("/urls/:id", (req, res) => {
@@ -47,6 +46,11 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls-show", templateVars);
 });
 
+app.get("/u/:shortURL", (req, res) => {
+  const short_URL = req.params.shortURL;
+  let long_URL = urlDatabase[short_URL];
+  res.redirect(long_URL);
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
@@ -54,12 +58,12 @@ app.listen(PORT, () => {
 
 
 function generateRandomString() {
-  let alphanumeric = `abcdefghijklmnopqrstuwvxyz0123456789`;
+  let alphanumeric = `abcdefghijklmnopqrstuwvxyzABCDEFGHIJKLMNOPQRSTUWVXYZ0123456789`;
   let aShortURL = "";
   let randomNumber;
 
   for (let i = 0; i < 6; i++) {
-    randomNumber = Math.trunc(Math.random() * 27);
+    randomNumber = Math.floor(Math.random() * alphanumeric.length);
     aShortURL += alphanumeric[randomNumber];
   }
 
