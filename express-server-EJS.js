@@ -30,7 +30,14 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
+
+  let returnedInput = req.body;
+  let short_URL = generateRandomString();
+  let long_URL = returnedInput.longURL;
+
+  // Update urlDatabase with user's url input and a random short url generated
+  urlDatabase[short_URL] = long_URL;
+
   res.send("Ok");
 })
 
