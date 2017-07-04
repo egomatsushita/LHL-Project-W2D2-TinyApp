@@ -25,12 +25,6 @@ app.get("/urls", (req, res) => {
   res.render("urls-index", templateVars);
 });
 
-app.get("/urls/:id", (req, res) => {
-  const aLongURL = urlDatabase[req.params.id];
-  let templateVars = { shortURL: req.params.id, longURL: aLongURL };
-  res.render("urls-show", templateVars);
-});
-
 app.get("/urls/new", (req, res) => {
   res.render("urls-new");
 });
@@ -39,6 +33,13 @@ app.post("/urls", (req, res) => {
   console.log(req.body);
   res.send("Ok");
 })
+
+app.get("/urls/:id", (req, res) => {
+  const aLongURL = urlDatabase[req.params.id];
+  let templateVars = { shortURL: req.params.id, longURL: aLongURL };
+  res.render("urls-show", templateVars);
+});
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
