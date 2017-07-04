@@ -11,16 +11,22 @@ var urlDatabase = {
 
 app.get("/", (req, res) => {
   res.end("Hello!");
-})
+});
 
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n")
-})
+});
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase}
+  let templateVars = { urls: urlDatabase};
   res.render("urls-index", templateVars);
-})
+});
+
+app.get("/urls/:id", (req, res) => {
+  const aLongURL = urlDatabase[req.params.id];
+  let templateVars = { shortURL: req.params.id, longURL: aLongURL };
+  res.render("urls-show", templateVars);
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
