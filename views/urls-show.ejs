@@ -7,6 +7,7 @@
   </head>
   <body>
     <% include ./partials/_header %>
+    <p><%= username %></p>
     <h1> URL SHOW </h1>
     <h2><%= shortURL %>: <%= longURL %></h2>
     <form method="POST" action="/urls/<%= shortURL %>/update">
