@@ -7,10 +7,12 @@
   </head>
   <body>
     <% include ./partials/_header %>
-    <h3> URL SHOW </h3>
-    <ul>
-        <li><%= shortURL %>: <%= longURL %></li>
-    </ul>
+    <h1> URL SHOW </h1>
+    <h2><%= shortURL %>: <%= longURL %></h2>
+    <form method="POST" action="/urls/<%= shortURL %>/update">
+      <input type="text" name="longURL" id="longURL" placeholder="http://" style="width:300px">
+      <input type="submit" value="Update">
+    </form>
     <a href="http://localhost:8080/urls">Home</a>
   </body>
 </html>
