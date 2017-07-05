@@ -43,14 +43,14 @@ app.post("/urls", (req, res) => {
   // Update urlDatabase with user's url input and a random short url generated
   urlDatabase[short_URL] = long_URL;
 
-  res.redirect(`http://localhost:8080/urls/${short_URL}`);
+  res.redirect(`/urls/${short_URL}`);
 });
 
 // Show short url
 app.post("/urls/:id", (req, res) => {
   let short_URL = req.params.id;
 
-  res.redirect(`http://localhost:8080/urls/${short_URL}`);
+  res.redirect(`/urls/${short_URL}`);
 });
 
 // Update long url
@@ -62,7 +62,7 @@ app.post("/urls/:id/update", (req, res) => {
   // Update urlDatabase updating long url
   urlDatabase[short_URL] = long_URL;
 
-  res.redirect(`http://localhost:8080/urls`);
+  res.redirect(`/urls`);
 
 });
 
@@ -73,7 +73,7 @@ app.post("/urls/:id/delete", (req, res) => {
   // Update urlDatabase deleting a key/value pair
   delete urlDatabase[short_URL];
 
-  res.redirect(`http://localhost:8080/urls`);
+  res.redirect(`/urls`);
 });
 
 // Show urls-show page
@@ -93,8 +93,8 @@ app.get("/u/:shortURL", (req, res) => {
 // Login route
 app.post("/login", (req,res) => {
   const returnedInput = req.body;
-  res.cookie("username", returnedInput);
-  res.redirect("http://localhost:8080/urls");
+  res.cookie("username", returnedInput.username);
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {

@@ -8,18 +8,16 @@
   <body>
     <% include ./partials/_header %>
     <h3> URL INDEX </h3>
-    <!-- <ul> -->
       <% for(var url in urls) { %>
         <form method="POST" action="/urls/<%= url %>/delete">
           <%= urls[url] %>
-          <a href="http://localhost:8080/urls/<%= url %>">Edit</a>
+          <a href="/urls/<%= url %>">Edit</a>
           <input type="submit" value="delete">
         </form>
         <form method="POST" action="/urls/<%= url %>">
           <input type="submit" value="short url">
         </form>
       <% } %>
-    <!-- </ul> -->
-    <a href="http://localhost:8080/urls/new/">Generate Short URL</a>
+    <a href="/urls/new/">Generate Short URL</a>
   </body>
 </html>
