@@ -17,7 +17,7 @@ let urlDatabase = {
 
 // Print message to root
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  res.redirect("/urls");
 });
 
 // Print message to hello directory
