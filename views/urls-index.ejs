@@ -10,8 +10,12 @@
     <h3> URL INDEX </h3>
     <ul>
       <% for(var url in urls) { %>
-        <li><%= urls[url] %></li>
+        <form method="POST" action="/urls/<%= url %>/delete">
+          <li><%= url %>: <%= urls[url] %></li>
+          <input type="submit" value="delete">
+        </form>
       <% } %>
     </ul>
+    <a href="http://localhost:8080/urls/new/">Click to see Short URL</a>
   </body>
 </html>
