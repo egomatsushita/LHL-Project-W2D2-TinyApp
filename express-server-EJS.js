@@ -90,6 +90,12 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(long_URL);
 })
 
+// Login route
+app.post("/login", (req,res) => {
+  const returnedInput = req.body;
+  res.cookie("username", returnedInput);
+  res.redirect("http://localhost:8080/urls");
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
