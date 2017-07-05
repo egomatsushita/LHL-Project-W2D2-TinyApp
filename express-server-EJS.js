@@ -40,11 +40,18 @@ app.post("/urls", (req, res) => {
   res.redirect(`http://localhost:8080/urls/${short_URL}`);
 })
 
+app.post("/urls/:id/delete", (req, res) => {
+  let short_URL = req.params.id;
+  delete urlDatabase[short_URL];
+  res.redirect(`http://localhost:8080/urls`);
+});
+
 app.get("/urls/:id", (req, res) => {
   const aLongURL = urlDatabase[req.params.id];
   let templateVars = { shortURL: req.params.id, longURL: aLongURL };
   res.render("urls-show", templateVars);
 });
+
 
 app.get("/u/:shortURL", (req, res) => {
   const short_URL = req.params.shortURL;
