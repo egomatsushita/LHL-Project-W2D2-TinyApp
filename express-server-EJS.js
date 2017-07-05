@@ -54,10 +54,10 @@ app.post("/urls/:id", (req, res) => {
 });
 
 // Update long url
-app.post("/urls", (req, res) => {
+app.post("/urls/:id/update", (req, res) => {
   let short_URL = req.params.id;
-  let long_URL = res.body;
-  console.log(long_URL);
+  let returnedInput = req.body;
+  let long_URL = `http://${returnedInput.longURL}`;
 
   // Update urlDatabase updating long url
   urlDatabase[short_URL] = long_URL;
