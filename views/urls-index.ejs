@@ -27,6 +27,7 @@
             <td colspan="4" style="text-align: center">URL Index</td>
           </tr>
           <% for(var url in urls) { %>
+            <% if (url !== "userID") { %>
           <tr>
             <td style="width: 300px">
               <%= urls[url] %>
@@ -45,6 +46,7 @@
               </form>
             </td>
           </tr>
+            <% } %>
           <% } %>
           <tr>
             <td colspan="4"><a href="/urls/new/"><button>Generate Short URL</button></a></td>

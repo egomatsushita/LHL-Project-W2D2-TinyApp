@@ -14,6 +14,7 @@ const users = {};
 
 // Database that stores short and long urls
 let urlDatabase = {
+  "userID": "",
   "b2xVn2": "http://www.lighthouselabs.ca",
   "s9m5xK": "http://www.google.com"
 };
@@ -51,6 +52,8 @@ app.post("/register", (req, res) => {
     email: email,
     password: password
   };
+
+  urlDatabase['userID'] = userId;
 
   // set up user_id cookies
   res.cookie("user_id", userId);
@@ -155,11 +158,13 @@ app.get("/u/:shortURL", (req, res) => {
 app.post("/login", (req,res) => {
   const email = req.body.email;
   const password = req.body.password;
+
   if (!isANewEmail(email)) {
     for (let user in users) {
       let aUser = users[user];
       if (aUser.email === email && aUser.password === password) {
         res.cookie("user_id", user);
+        urlDatabase['userID'] = user;
         return res.redirect("/urls"); // ATTENTION '/' SEE LATER
       } else {
         return res.status(403).render("form-not-match-email-password");
