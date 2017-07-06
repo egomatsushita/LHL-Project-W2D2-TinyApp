@@ -4,21 +4,72 @@
 <html lang="en">
   <head>
     <title>Tiny App</title>
+    <style>
+      tr, td, th {
+        line-height: 1.5em;
+      }
+      #allPage {
+        width: 960px;
+        margin: 50px auto 50px auto;
+      }
+      button {
+        width: 100%;
+        background: #333333;
+        color: white;
+      }
+    </style>
   </head>
   <body>
-    <% include ./partials/_header %>
-    <p><%= username %></p>
-    <h3> URL INDEX </h3>
-      <% for(var url in urls) { %>
-        <form method="POST" action="/urls/<%= url %>/delete">
-          <%= urls[url] %>
-          <a href="/urls/<%= url %>">Edit</a>
-          <input type="submit" value="delete">
-        </form>
-        <form method="POST" action="/urls/<%= url %>">
-          <input type="submit" value="short url">
-        </form>
-      <% } %>
-    <a href="/urls/new/">Generate Short URL</a>
+    <div id="allPage">
+      <% include ./partials/_header %>
+      <p><%= username %></p>
+      <table>
+        <tr style="font-weight: bold; font-size: 1.5em; line-height: 2em">
+          <td colspan="4" style="text-align: center">URL Index</td>
+        </tr>
+        <% for(var url in urls) { %>
+        <tr>
+          <td style="width: 300px">
+            <%= urls[url] %>
+          </td>
+          <td style="width: 50px">
+            <a href="/urls/<%= url %>">Edit</a>
+          </td>
+          <td>
+            <form method="POST" action="/urls/<%= url %>/delete">
+              <input type="submit" value="Delete">
+            </form>
+          </td>
+          <td>
+            <form method="POST" action="/urls/<%= url %>">
+              <input type="submit" value="Short URL">
+            </form>
+          </td>
+        </tr>
+        <% } %>
+        <tr>
+          <td colspan="4"><a href="/urls/new/"><button>Generate Short URL</button></a></td>
+        </tr>
+      </table>
+
+      <!-- <ul>
+        <% for(var url in urls) { %>
+        <li>
+            <div style="width:300px">
+              <%= urls[url] %>
+            </div>
+            <div style="width:100px float:left">
+              <a href="/urls/<%= url %>">Edit</a>
+            </div>
+          <form method="POST" action="/urls/<%= url %>/delete">
+            <input type="submit" value="Delete">
+          </form>
+          <form method="POST" action="/urls/<%= url %>">
+            <input type="submit" value="Short URL">
+          </form>
+        <% } %>
+        </li>
+      </ul> -->
+    </div>
   </body>
 </html>
