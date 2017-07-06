@@ -20,7 +20,7 @@ let urlDatabase = {
 
 // Print message to root
 app.get("/", (req, res) => {
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 
 // Returns a page that includes a form with an email and password field
@@ -60,6 +60,7 @@ app.post("/register", (req, res) => {
 
 // Create a login page
 app.get("/login", (req, res) => {
+
   res.render("login");
 });
 
@@ -151,23 +152,29 @@ app.get("/u/:shortURL", (req, res) => {
 // Login route
 app.post("/login", (req,res) => {
   const email = req.body.email;
-
+  const password = req.body.password;
   if (!isANewEmail(email)) {
-    res.redirect("/urls");
+    for (let user in users) {
+      let aUser = users[user];
+      if (aUser.email === email && aUser.password === password) {
+        res.cookie("user_id", user);
+        return res.redirect("/");
+      } else {
+        return res.status(403).render("form-not-match-email-password");
+      }
+    }
   } else {
-    res.redirect("/register");
+    return res.status(403).render("form-cannot-found-email");
   }
-
-  // res.cookie("username", body.username);
-  // res.redirect("/urls");
 });
 
 // Logout route
 app.post("/logout", (req,res) => {
-  const body = req.body;
-  console.log(body);
+  // const body = req.body;
+  // console.log(body);
 
-  res.clearCookie("user");
+  res.clearCookie("user_id");
+  // res.session = null;
   res.redirect("/login");
 });
 
