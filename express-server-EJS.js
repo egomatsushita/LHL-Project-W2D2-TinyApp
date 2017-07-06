@@ -75,13 +75,18 @@ app.get("/urls", (req, res) => {
   res.render("urls-index", templateVars);
 });
 
-// Generate new short url
+// Generate new short url if user is logged in otherwise redirect to login page
 app.get("/urls/new", (req, res) => {
   let templateVars = {
     user: users[req.cookies['user_id']]
   }
 
-  res.render("urls-new", templateVars);
+  if (!templateVars.user) {
+    return res.render("login");
+  } else {
+    return res.render("urls-new", templateVars);
+  }
+
 });
 
 // Update urlDatabase when given a new long url
