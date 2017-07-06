@@ -55,7 +55,6 @@ app.post("/register", (req, res) => {
   // set up user_id cookies
   res.cookie("user_id", userId);
 
-  // return to /urls
   res.redirect("/urls");
 });
 
@@ -70,7 +69,8 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: req.cookies["username"]
+    username: req.cookies["username"],
+    user_id: users[req.cookies['user_id']]
   };
 
   res.render("urls-index", templateVars);
@@ -79,7 +79,8 @@ app.get("/urls", (req, res) => {
 // Generate new short url
 app.get("/urls/new", (req, res) => {
   let templateVars = {
-    username: req.cookies["username"]
+    username: req.cookies["username"],
+    user_id: users[req.cookies['user_id']]
   }
 
   res.render("urls-new", templateVars);
@@ -133,7 +134,8 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
     longURL: aLongURL,
-    username: req.cookies["username"]
+    username: req.cookies["username"],
+    user_id: users[req.cookies['user_id']]
   };
 
   res.render("urls-show", templateVars);
