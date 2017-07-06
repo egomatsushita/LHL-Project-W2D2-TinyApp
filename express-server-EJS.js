@@ -20,7 +20,7 @@ let urlDatabase = {
 
 // Print message to root
 app.get("/", (req, res) => {
-  res.redirect("/urls");
+  res.render("welcome");
 });
 
 // Returns a page that includes a form with an email and password field
@@ -155,7 +155,7 @@ app.post("/login", (req,res) => {
       let aUser = users[user];
       if (aUser.email === email && aUser.password === password) {
         res.cookie("user_id", user);
-        return res.redirect("/");
+        return res.redirect("/urls"); // ATTENTION '/' SEE LATER
       } else {
         return res.status(403).render("form-not-match-email-password");
       }
