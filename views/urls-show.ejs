@@ -4,16 +4,48 @@
 <html lang="en">
   <head>
     <title>Tiny App</title>
+    <style>
+      tr, td, th {
+        line-height: 1.5em;
+      }
+      button {
+        width: 100%;
+        background: #666666;
+        color: white;
+      }
+    </style>
   </head>
-  <body>
+  <body style="font-size:20px; padding:50px">
     <% include ./partials/_header %>
-    <p><%= username %></p>
-    <h1> URL SHOW </h1>
-    <h2><%= shortURL %>: <%= longURL %></h2>
-    <form method="POST" action="/urls/<%= shortURL %>/update">
-      <input type="text" name="longURL" id="longURL" placeholder="http://" style="width:300px">
-      <input type="submit" value="Update">
-    </form>
-    <a href="http://localhost:8080/urls">Home</a>
+    <!-- <p><%= username %></p> -->
+    <div style="margin-top:50px; margin-left:150px">
+        <table>
+          <tr style="font-weight: bold; font-size: 1.5em; line-height: 1.5em;">
+            <td colspan="2" style="text-align: center">URL Show</td>
+          </tr>
+          <tr>
+            <td>
+              <h4>Short URL:</h4>
+            </td>
+            <td>
+              <%= shortURL %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>Long URL:</h4>
+            </td>
+            <td>
+              <%= longURL %>
+            </td>
+          </tr>
+        </table>
+        <form method="POST" action="/urls/<%= shortURL %>/update">
+          <input type="text" name="longURL" id="longURL" placeholder="http://" style="width:300px">
+          <input type="submit" value="Update">
+        </form>
+        <a href="http://localhost:8080/urls">Home</a>
+
+      </div>
   </body>
 </html>

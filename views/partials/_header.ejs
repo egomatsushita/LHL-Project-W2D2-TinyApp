@@ -8,6 +8,7 @@
   </form>
 <% } else { %>
   <form method="POST" action="/logout">
+    <label>Welcome, <%= username %>!</label>
     <input type="submit" value="Logout">
   </form>
 <% } %>
