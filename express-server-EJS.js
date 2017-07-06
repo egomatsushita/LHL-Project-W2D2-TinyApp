@@ -9,6 +9,9 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
+// Store and access the users in the app
+const users = {};
+
 // Database that stores short and long urls
 let urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -28,12 +31,14 @@ app.get("/register", (req, res) => {
 // Receive data from urls-register page and redirect to /urls
 app.post("/register", (req, res) => {
   let body = req.body;
-  let data = {
+  let userId = generateUserRandomId(body);
+  console.log(userId);
+  users[userId] = {
     email: body.email,
     password: body.password
   };
 
-  console.log(data.email, data.password);
+  console.log(users);
   res.redirect("/urls");
 });
 
@@ -155,5 +160,16 @@ function generateRandomString() {
   }
 
   return aShortURL;
+}
+
+// Generate an user random id from his input data
+function generateUserRandomId(body) {
+  let alpha = body.email.indexOf('@');
+  let aUserIdPartial1 = body.email.slice(0, alpha);
+  let aUserIdPartial2 = Math.floor(Math.random() * 10);
+
+  let aUserId = aUserIdPartial1 + aUserIdPartial2;
+
+  return aUserId;
 }
 
