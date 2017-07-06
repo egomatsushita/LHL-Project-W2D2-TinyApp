@@ -20,6 +20,23 @@ app.get("/", (req, res) => {
   res.redirect("/urls");
 });
 
+// Returns a page that includes a form with an email and password field
+app.get("/register", (req, res) => {
+  res.render("urls-register");
+});
+
+// Receive data from urls-register page and redirect to /urls
+app.post("/register", (req, res) => {
+  let body = req.body;
+  let data = {
+    email: body.email,
+    password: body.password
+  };
+
+  console.log(data.email, data.password);
+  res.redirect("/urls");
+});
+
 // Print message to hello directory
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n")
