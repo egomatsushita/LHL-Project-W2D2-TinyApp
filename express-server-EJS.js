@@ -20,7 +20,7 @@ let urlDatabase = {
 
 // Print message to root
 app.get("/", (req, res) => {
-  res.redirect("/login");
+  res.redirect("/urls");
 });
 
 // Returns a page that includes a form with an email and password field
@@ -69,7 +69,6 @@ app.get("/login", (req, res) => {
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: req.cookies["username"],
     user: users[req.cookies['user_id']]
   };
 
@@ -79,7 +78,6 @@ app.get("/urls", (req, res) => {
 // Generate new short url
 app.get("/urls/new", (req, res) => {
   let templateVars = {
-    username: req.cookies["username"],
     user: users[req.cookies['user_id']]
   }
 
@@ -134,7 +132,6 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
     longURL: aLongURL,
-    username: req.cookies["username"],
     user: users[req.cookies['user_id']]
   };
 
@@ -170,11 +167,7 @@ app.post("/login", (req,res) => {
 
 // Logout route
 app.post("/logout", (req,res) => {
-  // const body = req.body;
-  // console.log(body);
-
   res.clearCookie("user_id");
-  // res.session = null;
   res.redirect("/login");
 });
 
