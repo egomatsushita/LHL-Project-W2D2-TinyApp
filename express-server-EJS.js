@@ -28,19 +28,26 @@ app.get("/register", (req, res) => {
   res.render("urls-register");
 });
 
-// Receive data from urls-register page and redirect to /urls
+// Receive data from urls-register page
+// Register a new user
+// Redirect to /urls
 app.post("/register", (req, res) => {
   let body = req.body;
   let userId = generateUserRandomId(body);
-  console.log(userId);
+
+  // Register a new user
   users[userId] = {
     email: body.email,
     password: body.password
   };
 
-  console.log(users);
+  // set up user_id cookies
+  res.cookie("user_id", userId);
+
   res.redirect("/urls");
 });
+
+
 
 // Print message to hello directory
 app.get("/hello", (req, res) => {
@@ -156,8 +163,8 @@ function generateRandomString() {
 
   for (let i = 0; i < 6; i++) {
     randomNumber = Math.floor(Math.random() * alphanumeric.length);
-    aShortURL += alphanumeric[randomNumber];
   }
+    aShortURL += alphanumeric[randomNumber];
 
   return aShortURL;
 }
@@ -166,7 +173,7 @@ function generateRandomString() {
 function generateUserRandomId(body) {
   let alpha = body.email.indexOf('@');
   let aUserIdPartial1 = body.email.slice(0, alpha);
-  let aUserIdPartial2 = Math.floor(Math.random() * 10);
+  let aUserIdPartial2 = Math.floor(Math.random() * 1000);
 
   let aUserId = aUserIdPartial1 + aUserIdPartial2;
 
