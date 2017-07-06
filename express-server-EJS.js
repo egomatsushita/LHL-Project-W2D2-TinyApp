@@ -33,17 +33,29 @@ app.get("/register", (req, res) => {
 // Redirect to /urls
 app.post("/register", (req, res) => {
   let body = req.body;
+  let email = body.email;
+  let password = body.password;
   let userId = generateUserRandomId(body);
+
+  // Return messaging alerting with empty input or existing email
+  if (email === "" || password === "") {
+    res.status(400).render("form-empty-email-password");
+    return;
+  } else if (!isANewEmail(email)) {
+    res.status(400).render("form-existing-email");
+    return;
+  }
 
   // Register a new user
   users[userId] = {
-    email: body.email,
-    password: body.password
+    email: email,
+    password: password
   };
 
   // set up user_id cookies
   res.cookie("user_id", userId);
 
+  // return to /urls
   res.redirect("/urls");
 });
 
@@ -179,4 +191,17 @@ function generateUserRandomId(body) {
 
   return aUserId;
 }
+
+// Return true if there is an existing email
+function isANewEmail(email) {
+  let newEmail = true;
+
+  for (let aUserId in users) {
+    if (users[aUserId].email === email) {
+      newEmail = false;
+    }
+  }
+
+  return newEmail;
+  }
 
