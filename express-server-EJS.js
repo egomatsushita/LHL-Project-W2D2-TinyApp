@@ -25,10 +25,10 @@ app.get("/", (req, res) => {
 
 // Returns a page that includes a form with an email and password field
 app.get("/register", (req, res) => {
-  res.render("urls-register");
+  res.render("register");
 });
 
-// Receive data from urls-register page
+// Receive data from register page
 // Register a new user
 // Redirect to /urls
 app.post("/register", (req, res) => {
@@ -58,19 +58,18 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
-
-
-// Print message to hello directory
-app.get("/hello", (req, res) => {
-  res.end("<html><body>Hello <b>World</b></body></html>\n")
+// Create a login page
+app.get("/login", (req, res) => {
+  res.render("login");
 });
+
 
 // Index page
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
     username: req.cookies["username"],
-    user_id: users[req.cookies['user_id']]
+    user: users[req.cookies['user_id']]
   };
 
   res.render("urls-index", templateVars);
@@ -80,7 +79,7 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   let templateVars = {
     username: req.cookies["username"],
-    user_id: users[req.cookies['user_id']]
+    user: users[req.cookies['user_id']]
   }
 
   res.render("urls-new", templateVars);
@@ -135,7 +134,7 @@ app.get("/urls/:id", (req, res) => {
     shortURL: req.params.id,
     longURL: aLongURL,
     username: req.cookies["username"],
-    user_id: users[req.cookies['user_id']]
+    user: users[req.cookies['user_id']]
   };
 
   res.render("urls-show", templateVars);
@@ -151,18 +150,25 @@ app.get("/u/:shortURL", (req, res) => {
 
 // Login route
 app.post("/login", (req,res) => {
-  const body = req.body;
+  const email = req.body.email;
 
-  res.cookie("username", body.username);
-  res.redirect("/urls");
+  if (!isANewEmail(email)) {
+    res.redirect("/urls");
+  } else {
+    res.redirect("/register");
+  }
+
+  // res.cookie("username", body.username);
+  // res.redirect("/urls");
 });
 
 // Logout route
 app.post("/logout", (req,res) => {
   const body = req.body;
+  console.log(body);
 
-  res.clearCookie("username");
-  res.redirect("/urls");
+  res.clearCookie("user");
+  res.redirect("/login");
 });
 
 app.listen(PORT, () => {

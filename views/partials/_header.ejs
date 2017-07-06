@@ -1,25 +1,23 @@
 <h1>TinyURL App</h1>
 
-<% if(user_id) { %>
-  <label><h2>Welcome, <%= user_id.email %></h2></label>
-  <!-- <form method="POST" action="/logout">
-    <label><h2>Welcome, <%= user_id.email %></h2></label>
+<% if(user) { %>
+  <form method="POST" action="/logout">
+    <label><h2>Welcome, <%= user.email %></h2></label>
     <input type="submit" value="Logout">
-  </form> -->
+  </form>
 <% } else { %>
-    <% if(username === undefined) { %>
-    <form method="POST" action="/login">
-      <label>Login: </label>
-      <input type="text" name="username">
-      <input type="submit" value="Login">
-    </form>
-  <% } else { %>
-    <form method="POST" action="/logout">
-      <label>Welcome, <%= username %>!</label>
-      <input type="submit" value="Logout">
-    </form>
-  <% } %>
+  <form method="POST" action="/login">
+    <label>Login: </label>
+    <input type="text" name="emailLogin">
+    <input type="submit" value="Login">
+  </form>
+
 <% } %>
+
+
+
+
+
 
 <!-- <% if(username === undefined) { %>
   <form method="POST" action="/login">
