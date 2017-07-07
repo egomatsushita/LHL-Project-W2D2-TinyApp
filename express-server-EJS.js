@@ -24,9 +24,16 @@ let urlDatabase = {
 };
 
 
-// Open welcome page
+// Open index page if logged in otherwise open login page
 app.get("/", (req, res) => {
-  res.render("welcome");
+
+  if (!users[req.session.user_id]) {
+    return res.render("login");
+  } else {
+    return res.redirect("/urls");
+  }
+
+  // res.render("welcome");
 });
 
 
