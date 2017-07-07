@@ -200,16 +200,19 @@ app.get("/u/:shortURL", (req, res) => {
 app.post("/login", (req,res) => {
   const email = req.body.email;
   const password = req.body.password;
+  const hashed_password = bcrypt.hashSync(password, 10);
 
   if (!isANewEmail(email)) {
     for (let user in users) {
       let aUser = users[user];
-      if (aUser.email === email && aUser.password === password) {
+      if (aUser.email === email && bcrypt.compareSync(aUser.password, hashed_password)) {
+      // if (aUser.email === email && aUser.password === password) {
         res.cookie("user_id", user);
         // urlDatabase['userID'] = aUser.email;
         return res.redirect("/urls"); // ATTENTION '/' SEE LATER
       }
-      else if (aUser.email === email && aUser.password !== password){
+      else if (aUser.email === email && bcrypt.compareSync(aUser.password, hashed_password)){
+      // else if (aUser.email === email && aUser.password !== password){
         return res.status(403).render("form-not-match-email-password");
       }
     }
