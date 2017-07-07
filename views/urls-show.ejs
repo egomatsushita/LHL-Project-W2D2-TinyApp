@@ -27,7 +27,7 @@
               <h4>Short URL:</h4>
             </td>
             <td>
-              <%= shortURL %>
+              <a href="/u/<%= shortURL %>"><%= shortURL %></a>
             </td>
           </tr>
           <tr>
@@ -35,7 +35,7 @@
               <h4>Long URL:</h4>
             </td>
             <td>
-              <%= longURL %>
+              <a href="<%= longURL %>"><%= longURL %></a>
             </td>
           </tr>
         </table>
@@ -43,7 +43,7 @@
           <input type="text" name="longURL" id="longURL" placeholder="http://" style="width:300px">
           <input type="submit" value="Update">
         </form>
-        <a href="http://localhost:8080/urls">Home</a>
+        <a href="/urls">Home</a>
 
       </div>
   </body>

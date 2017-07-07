@@ -31,7 +31,7 @@
               <% if (key === "url") { %>
           <tr>
             <td style="width: 300px">
-              <%= urls[url][key] %>
+              <a href="<%= urls[url][key] %>"><%= urls[url][key] %></a>
             </td>
             <td style="width: 50px">
               <a href="/urls/<%= url %>">Edit</a>
