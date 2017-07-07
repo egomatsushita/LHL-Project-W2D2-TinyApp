@@ -27,10 +27,11 @@
             <td colspan="4" style="text-align: center">URL Index</td>
           </tr>
           <% for(var url in urls) { %>
-            <% if (url !== "userID") { %>
+            <% for (var key in urls[url]) {%>
+              <% if (key === "url") { %>
           <tr>
             <td style="width: 300px">
-              <%= urls[url] %>
+              <%= urls[url][key] %>
             </td>
             <td style="width: 50px">
               <a href="/urls/<%= url %>">Edit</a>
@@ -46,6 +47,7 @@
               </form>
             </td>
           </tr>
+              <% } %>
             <% } %>
           <% } %>
           <tr>

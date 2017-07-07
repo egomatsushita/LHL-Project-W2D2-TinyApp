@@ -14,9 +14,14 @@ const users = {};
 
 // Database that stores short and long urls
 let urlDatabase = {
-  "userID": "",
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "s9m5xK": "http://www.google.com"
+  "b2xVn2": {
+    "url": "http://www.lighthouselabs.ca",
+    "userID": ""
+  },
+  "s9m5xK": {
+    "url": "http://www.google.com",
+    "userID": ""
+  }
 };
 
 // Print message to root
@@ -49,11 +54,12 @@ app.post("/register", (req, res) => {
 
   // Register a new user
   users[userId] = {
+    id: userId,
     email: email,
     password: password
   };
 
-  urlDatabase['userID'] = userId;
+  //urlDatabase['userID'] = users[userId]; //**********
 
   // set up user_id cookies
   res.cookie("user_id", userId);
@@ -75,7 +81,7 @@ app.get("/urls", (req, res) => {
     user: users[req.cookies['user_id']]
   };
 
-  res.render("urls-index", templateVars);
+  return res.render("urls-index", templateVars);
 });
 
 // Generate new short url if user is logged in otherwise redirect to login page
@@ -94,12 +100,15 @@ app.get("/urls/new", (req, res) => {
 
 // Update urlDatabase when given a new long url
 app.post("/urls", (req, res) => {
+  let user = users[req.cookies['user_id']];
   let returnedInput = req.body;
   let short_URL = generateRandomString();
   let long_URL = `http://${returnedInput.longURL}`;
 
   // Update urlDatabase with user's url input and a random short url generated
-  urlDatabase[short_URL] = long_URL;
+  urlDatabase[short_URL] = {};
+  urlDatabase[short_URL]['url'] = long_URL;
+  urlDatabase[short_URL]['userID'] = user['id'];
 
   res.redirect(`/urls/${short_URL}`);
 });
@@ -116,9 +125,15 @@ app.post("/urls/:id/update", (req, res) => {
   let short_URL = req.params.id;
   let returnedInput = req.body;
   let long_URL = `http://${returnedInput.longURL}`;
+  let templateVars = {
+    urls: urlDatabase,
+    user: users[req.cookies['user_id']]
+  }
 
-  // Update urlDatabase updating long url
-  urlDatabase[short_URL] = long_URL;
+  if (templateVars['urls'][short_URL]['userID'] === templateVars['user']['id']) {
+    // Update urlDatabase updating long url
+    urlDatabase[short_URL]['url'] = long_URL;
+  }
 
   res.redirect(`/urls`);
 
@@ -127,16 +142,22 @@ app.post("/urls/:id/update", (req, res) => {
 // Delete data from urlDatabase
 app.post("/urls/:id/delete", (req, res) => {
   let short_URL = req.params.id;
+  let templateVars = {
+    urls: urlDatabase,
+    user: users[req.cookies['user_id']]
+  }
 
-  // Update urlDatabase deleting a key/value pair
-  delete urlDatabase[short_URL];
+  if (templateVars['urls'][short_URL]['userID'] === templateVars['user']['id']) {
+    // Update urlDatabase deleting a key/value pair
+    delete urlDatabase[short_URL];
+  }
 
   res.redirect(`/urls`);
 });
 
 // Show urls-show page
 app.get("/urls/:id", (req, res) => {
-  const aLongURL = urlDatabase[req.params.id];
+  const aLongURL = urlDatabase[req.params.id]['url'];
   let templateVars = {
     shortURL: req.params.id,
     longURL: aLongURL,
@@ -164,7 +185,7 @@ app.post("/login", (req,res) => {
       let aUser = users[user];
       if (aUser.email === email && aUser.password === password) {
         res.cookie("user_id", user);
-        urlDatabase['userID'] = user;
+        urlDatabase['userID'] = aUser.email;
         return res.redirect("/urls"); // ATTENTION '/' SEE LATER
       } else {
         return res.status(403).render("form-not-match-email-password");
@@ -193,8 +214,8 @@ function generateRandomString() {
 
   for (let i = 0; i < 6; i++) {
     randomNumber = Math.floor(Math.random() * alphanumeric.length);
-  }
     aShortURL += alphanumeric[randomNumber];
+  }
 
   return aShortURL;
 }
