@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-
+const bcrypt = require('bcrypt');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -40,11 +40,13 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   let body = req.body;
   let email = body.email;
-  let password = body.password;
+  const password = body.password;
+  const hashed_password = bcrypt.hashSync(password, 10);
   let userId = generateUserRandomId(body);
 
   // Return messaging alerting with empty input or existing email
-  if (email === "" || password === "") {
+  if (email === "" || bcrypt.compareSync("", hashed_password)) {
+  // if (email === "" || password === "") {
     res.status(400).render("form-empty-email-password");
     return;
   } else if (!isANewEmail(email)) {
