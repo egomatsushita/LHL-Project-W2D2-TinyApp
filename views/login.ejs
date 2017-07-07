@@ -4,16 +4,14 @@
   <title>TinyURL App</title>
 </head>
 <body style="font-size:20px; padding:50px">
-  <h1>Welcome to TinyURL App!!!</h1>
-  <form method="POST" action="/login" style="margin: 150px">
+  <% include ./partials/_header %>
+  <form method="POST" action="/login" style="margin: 150px;">
     <label>Login: </label>
     <input type="text" name="email">
     <label>Password: </label>
     <input type="Password" name="password">
     <input type="submit" value="Login">
   </form>
-  <h3>Already not registered?</h3>
-  <a href="/register"><input type="button" value="Register"></a>
 </body>
 </html>
 

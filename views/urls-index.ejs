@@ -30,6 +30,9 @@
             <% for (var key in urls[url]) {%>
               <% if (key === "url") { %>
           <tr>
+            <td style="width: 100px">
+              <a href="<%= urls[url][key] %>"><%= url %></a>
+            </td>
             <td style="width: 300px">
               <a href="<%= urls[url][key] %>"><%= urls[url][key] %></a>
             </td>
@@ -51,7 +54,7 @@
             <% } %>
           <% } %>
           <tr>
-            <td colspan="4"><a href="/urls/new/"><button>Generate Short URL</button></a></td>
+            <td colspan="5"><a href="/urls/new/"><button>Create a New Short Link</button></a></td>
           </tr>
         </table>
       </div>

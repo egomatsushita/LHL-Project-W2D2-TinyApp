@@ -28,18 +28,22 @@ let urlDatabase = {
 app.get("/", (req, res) => {
 
   if (!users[req.session.user_id]) {
-    return res.render("login");
+    return res.redirect("/login");
   } else {
     return res.redirect("/urls");
   }
-
-  // res.render("welcome");
 });
 
 
 // Open register page where a new user input email and password
 app.get("/register", (req, res) => {
-  res.render("register");
+
+  if (!users[req.session.user_id]) {
+    return res.render("register");
+  } else {
+    return res.redirect("/urls");
+  }
+
 });
 
 
@@ -55,9 +59,9 @@ app.post("/register", (req, res) => {
 
   // Return a message alerting with an empty input or an existing email
   if (email === "" || bcrypt.compareSync("", hashed_password)) {
-    return res.status(400).render("form-empty-email-password");
+    return res.status(400).render("msg-empty-email-password");
   } else if (!isANewEmail(email)) {
-    return res.status(400).render("form-existing-email");
+    return res.status(400).render("msg-existing-email");
   }
 
   // Register a new user
@@ -80,7 +84,11 @@ app.post("/register", (req, res) => {
 // Open the login page
 app.get("/login", (req, res) => {
 
-  res.render("login");
+  let templateVars = {
+    user: users[req.session.user_id]
+  };
+
+  res.render("login", templateVars);
 });
 
 
@@ -88,7 +96,7 @@ app.get("/login", (req, res) => {
 app.get("/urls", (req, res) => {
   // If an user tries to access without being logged in the page returns to the welcome page
   if (!users[req.session.user_id]) {
-    return res.render("welcome");
+    return res.render("msg-not-logged-in");
   }
 
   // Generate a unique database for each user
@@ -114,7 +122,7 @@ app.get("/urls/new", (req, res) => {
   }
 
   if (!templateVars.user) {
-    return res.render("login");
+    return res.redirect("/login");
   } else {
     return res.render("urls-new", templateVars);
   }
@@ -180,6 +188,17 @@ app.post("/urls/:id/delete", (req, res) => {
 
 // Show urls-show page
 app.get("/urls/:id", (req, res) => {
+  let flag = true;
+  for (let key in urlDatabase) {
+    if (key === req.params.id) {
+      flag = false;
+    }
+  }
+
+  if (flag) {
+    return res.render("msg-url-does-not-exist");
+  }
+
   const user = urlDatabase[req.params.id]['userID'];
   const url = urlDatabase[req.params.id]['url'];
   let templateVars = {
@@ -188,11 +207,12 @@ app.get("/urls/:id", (req, res) => {
     user: users[req.session.user_id]
   };
 
+
   if (!users[req.session.user_id]) {
-    return res.render("welcome");
+    return res.render("msg-not-logged-in");
   } else {
     if (user !== templateVars['user']['id']) {
-      res.render("form-url-not-belong");
+      res.render("msg-url-not-belong");
     } else {
       res.render("urls-show", templateVars);
     }
@@ -202,6 +222,21 @@ app.get("/urls/:id", (req, res) => {
 
 // Redirect to url from short url
 app.get("/u/:shortURL", (req, res) => {
+
+  let flag = true;
+
+  for (let key in urlDatabase) {
+    if (key === req.params.shortURL) {
+      flag = false;
+    } else {
+    }
+  }
+
+  if (flag) {
+
+    return res.render("msg-url-does-not-exist");
+  }
+
   const short_URL = req.params.shortURL;
   let long_URL = urlDatabase[short_URL]['url'];
 
@@ -221,14 +256,14 @@ app.post("/login", (req,res) => {
       if (aUser.email === email && bcrypt.compareSync(aUser.password, hashed_password)) {
         req.session.user_id = user;
         urlDatabase['b2xVn2']['userID'] = user;
-        return res.redirect("/urls"); // ATTENTION '/' SEE LATER
+        return res.redirect("/urls");
       }
       else if (aUser.email === email && !(bcrypt.compareSync(aUser.password, hashed_password))){
-        return res.status(403).render("form-not-match-email-password");
+        return res.status(403).render("msg-not-match-email-password");
       }
     }
   } else {
-    return res.status(403).render("form-cannot-found-email");
+    return res.status(403).render("msg-cannot-found-email");
   }
 });
 
