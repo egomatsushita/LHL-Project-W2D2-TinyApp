@@ -58,8 +58,9 @@ app.post("/register", (req, res) => {
     email: email,
     password: password
   };
-
   //urlDatabase['userID'] = users[userId]; //**********
+  urlDatabase['b2xVn2']['userID'] = userId;
+
 
   // set up user_id cookies
   res.cookie("user_id", userId);
@@ -76,12 +77,19 @@ app.get("/login", (req, res) => {
 
 // Index page
 app.get("/urls", (req, res) => {
+  let _urlsForUser = urlsForUser(users[req.cookies['user_id']]['id']);
+
   let templateVars = {
-    urls: urlDatabase,
+    urls: _urlsForUser,
+    // urls: urlDatabase,
     user: users[req.cookies['user_id']]
   };
 
-  return res.render("urls-index", templateVars);
+  if (templateVars['user']) {
+    return res.render("urls-index", templateVars);
+  } else {
+    return res.render("welcome");
+  }
 });
 
 // Generate new short url if user is logged in otherwise redirect to login page
@@ -157,14 +165,25 @@ app.post("/urls/:id/delete", (req, res) => {
 
 // Show urls-show page
 app.get("/urls/:id", (req, res) => {
-  const aLongURL = urlDatabase[req.params.id]['url'];
+  const user = urlDatabase[req.params.id]['userID'];
+  const url = urlDatabase[req.params.id]['url'];
   let templateVars = {
     shortURL: req.params.id,
-    longURL: aLongURL,
+    longURL: url,
     user: users[req.cookies['user_id']]
   };
 
-  res.render("urls-show", templateVars);
+  // for (let id in users) {
+  //   console.log(users[id]['id'])
+  // }
+  if (user !== templateVars['user']['id']) {
+    res.render("form-url-not-belong");
+  } else {
+    res.render("urls-show", templateVars);
+
+  }
+
+
 });
 
 // Redirect to long url
@@ -185,9 +204,10 @@ app.post("/login", (req,res) => {
       let aUser = users[user];
       if (aUser.email === email && aUser.password === password) {
         res.cookie("user_id", user);
-        urlDatabase['userID'] = aUser.email;
+        // urlDatabase['userID'] = aUser.email;
         return res.redirect("/urls"); // ATTENTION '/' SEE LATER
-      } else {
+      }
+      else if (aUser.email === email && aUser.password !== password){
         return res.status(403).render("form-not-match-email-password");
       }
     }
@@ -242,5 +262,21 @@ function isANewEmail(email) {
   }
 
   return newEmail;
+}
+
+// Returns the subset of the URL database taht belongs to the user with ID
+function urlsForUser(id) {
+  let urlsForUser = {};
+
+  for (let short_URL in urlDatabase) {
+    for (let key in urlDatabase[short_URL]) {
+      if (urlDatabase[short_URL][key] === id) {
+        urlsForUser[short_URL] = {};
+        urlsForUser[short_URL]['url'] = urlDatabase[short_URL]['url'];
+      }
+    }
   }
+
+  return urlsForUser;
+}
 
