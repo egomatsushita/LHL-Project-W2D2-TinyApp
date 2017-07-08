@@ -2,16 +2,25 @@
 <html>
 <head>
   <title>TinyURL App</title>
+  <style>
+    #allPage {
+      width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
 </head>
 <body style="font-size:20px; padding:50px">
-  <h1>Welcome to TinyURL App!!!</h1>
-  <h3>Please register first to proceed.</h3>
-  <form method="POST" action="register" style="margin: 150px">
-    <label for="email" name="email">Email</label>
-    <input type="email" name="email" placeholder="example@abc.com">
-    <label for="password" name="password">Password</label>
-    <input type="password" name="password" placeholder="#######">
-    <input type="submit" name="submit" value="Register">
-  </form>
+  <div id="allPage">
+    <h1>Welcome to TinyURL App!!!</h1>
+    <h3>Please register first to proceed.</h3>
+    <form method="POST" action="register" style="margin: 150px">
+      <label for="email" name="email">Email</label>
+      <input type="email" name="email" placeholder="example@abc.com">
+      <label for="password" name="password">Password</label>
+      <input type="password" name="password" placeholder="#######">
+      <input type="submit" name="submit" value="Register">
+    </form>
+  </div>
 </body>
 </html>

@@ -94,7 +94,7 @@ app.get("/login", (req, res) => {
 
 // Index page
 app.get("/urls", (req, res) => {
-  // If an user tries to access without being logged in the page returns to the welcome page
+  // If an user tries to access without being logged in the page returns to the login page
   if (!users[req.session.user_id]) {
     return res.render("msg-not-logged-in");
   }
@@ -110,7 +110,7 @@ app.get("/urls", (req, res) => {
   if (templateVars['user']) {
     return res.render("urls-index", templateVars);
   } else {
-    return res.render("welcome");
+    return res.redirect("/login");
   }
 });
 
