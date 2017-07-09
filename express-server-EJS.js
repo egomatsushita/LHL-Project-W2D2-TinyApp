@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const bcrypt = require('bcrypt');
+const methodOverride = require('method-override');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -11,6 +12,7 @@ app.use(cookieSession( {
   name: 'session',
   keys: ['key1', 'key2']
 }));
+app.use(methodOverride('_method'));
 
 // Store and access the users in the app
 const users = {};
@@ -153,7 +155,7 @@ app.post("/urls/:id", (req, res) => {
 
 
 // Update url
-app.post("/urls/:id/update", (req, res) => {
+app.put("/urls/:id", (req, res) => {
   let short_URL = req.params.id;
   let returnedInput = req.body;
   let long_URL = `http://${returnedInput.longURL}`;
@@ -171,7 +173,7 @@ app.post("/urls/:id/update", (req, res) => {
 
 
 // Delete data from urlDatabase
-app.post("/urls/:id/delete", (req, res) => {
+app.delete("/urls/:id", (req, res) => {
   let short_URL = req.params.id;
   let templateVars = {
     urls: urlDatabase,

@@ -24,7 +24,6 @@
   <body style="font-size:20px; padding:50px">
     <div id="allPage">
       <% include ./partials/_header %>
-      <!-- <div style="margin-top:50px; margin-left:150px"> -->
           <table style="margin: 50px auto;">
             <tr style="font-weight: bold; font-size: 1.5em; line-height: 1.5em;">
               <td colspan="4" style="text-align: center">URL Show</td>
@@ -36,8 +35,6 @@
               <td>
                 <a href="/u/<%= shortURL %>"><%= shortURL %></a>
               </td>
-            <!-- </tr>
-            <tr> -->
               <td>
                 <h4>Long URL:</h4>
               </td>
@@ -47,7 +44,7 @@
             </tr>
           </table>
           <div style="margin:10px auto; width: 50%">
-            <form method="POST" action="/urls/<%= shortURL %>/update">
+            <form method="POST" action="/urls/<%= shortURL %>?_method=PUT">
               <input type="text" name="longURL" id="longURL" placeholder="http://" style="width:400px">
               <input type="submit" value="Update">
             </form>
@@ -55,7 +52,6 @@
           <div style="margin-top:20px; margin-right:150px; float:right;">
             <a href="/urls" >Home</a>
           </div>
-        <!-- </div> -->
       </div>
   </body>
 </html>
